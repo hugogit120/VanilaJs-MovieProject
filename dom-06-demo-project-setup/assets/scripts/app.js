@@ -20,6 +20,17 @@ const backDropClickHandler = () => {
   toggleMovieModal();
 };
 
+const clearMovieInput = () => {
+  for (const usrInput of userInputs) {
+    usrInput.value = "";
+  }
+};
+
+const cancelAddMovieHandler = () => {
+  toggleMovieModal();
+  clearMovieInput();
+};
+
 const addMovieHandler = () => {
   const titleValue = userInputs[0].value;
   const imageUrlValue = userInputs[1].value;
@@ -44,16 +55,7 @@ const addMovieHandler = () => {
   movies.push(newMovie);
   console.log(movies);
   toggleMovieModal();
-};
-
-const clearMovieInput = () => {
-  for (const usrInput of userInputs) {
-    usrInput.value = "";
-  }
-};
-
-const cancelAddMovieHandler = () => {
-  toggleMovieModal();
+  clearMovieInput();
 };
 
 startAddMovieButton.addEventListener("click", toggleMovieModal);
