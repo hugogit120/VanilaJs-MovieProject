@@ -5,6 +5,7 @@ const cancelAddMovieButton = addMovieModal.querySelector(".btn--passive");
 const confirmAddMovieButton = cancelAddMovieButton.nextElementSibling;
 const userInputs = addMovieModal.querySelectorAll("input");
 const entryTextSection = document.getElementById("entry-text");
+const deleteMovieModal = document.getElementById("delete-modal");
 
 const movies = [];
 
@@ -16,7 +17,7 @@ const updateUI = () => {
   }
 };
 
-const deleteMovieHandler = (movieId) => {
+const deleteMovie = (movieId) => {
   let movieIndex = 0;
   for (const movie of movies) {
     if (movie.id === movieId) {
@@ -27,6 +28,17 @@ const deleteMovieHandler = (movieId) => {
   movies.splice(movieIndex, 1);
   const listRoot = document.getElementById("movie-list");
   listRoot.children[movieIndex].remove();
+};
+
+const closeMovieDeletionModal = () => {
+  toggleBackDrop();
+  deleteMovieModal.classList.remove("visible");
+};
+
+const deleteMovieHandler = (movieId) => {
+  deleteMovieModal.classList.add("visible");
+  toggleBackDrop();
+  //deleteMovie(movieId)
 };
 
 const renderNewMovieElement = (id, title, imageUrl, rating) => {
@@ -50,13 +62,13 @@ const toggleBackDrop = () => {
   backDrop.classList.toggle("visible");
 };
 
-const toggleMovieModal = () => {
-  addMovieModal.classList.toggle("visible");
-  toggleBackDrop();
+const closeMovieModal = () => {
+  addMovieModal.classList.remove("visible");
 };
 
-const backDropClickHandler = () => {
-  toggleMovieModal();
+const showMovieModal = () => {
+  addMovieModal.classList.add("visible");
+  toggleBackDrop();
 };
 
 const clearMovieInput = () => {
@@ -66,7 +78,7 @@ const clearMovieInput = () => {
 };
 
 const cancelAddMovieHandler = () => {
-  toggleMovieModal();
+  closeMovieModal();
   clearMovieInput();
 };
 
@@ -94,7 +106,8 @@ const addMovieHandler = () => {
 
   movies.push(newMovie);
   console.log(movies);
-  toggleMovieModal();
+  closeMovieModal();
+  toggleBackDrop();
   clearMovieInput();
   renderNewMovieElement(
     newMovie.id,
@@ -105,13 +118,12 @@ const addMovieHandler = () => {
   updateUI();
 };
 
-startAddMovieButton.addEventListener("click", toggleMovieModal);
+const backDropClickHandler = () => {
+  closeMovieModal();
+  closeMovieDeletionModal();
+};
+
+startAddMovieButton.addEventListener("click", showMovieModal);
 backDrop.addEventListener("click", backDropClickHandler);
 cancelAddMovieButton.addEventListener("click", cancelAddMovieHandler);
 confirmAddMovieButton.addEventListener("click", addMovieHandler);
-
-for (let num of inputs) {
-  userInputs[num].addEventListener("click", () => {
-    console.log("hola");
-  });
-}
